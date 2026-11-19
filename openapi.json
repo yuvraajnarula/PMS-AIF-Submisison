@@ -1,0 +1,1506 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Indian Mutual Fund Analytics API",
+    "description": "NAV returns and risk metrics for informational use, not investment advice.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes": {
+      "get": {
+        "summary": "List Schemes",
+        "operationId": "list_schemes_v1_schemes_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "category_group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category Group"
+            }
+          },
+          {
+            "name": "amc",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Amc"
+            }
+          },
+          {
+            "name": "plan",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "direct",
+                    "regular",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Plan"
+            }
+          },
+          {
+            "name": "option",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "growth",
+                    "idcw",
+                    "bonus",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Option"
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Active"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemesListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes/{code}": {
+      "get": {
+        "summary": "Get Scheme",
+        "operationId": "get_scheme_v1_schemes__code__get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchemeDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes/{code}/nav": {
+      "get": {
+        "summary": "Get Nav",
+        "operationId": "get_nav_v1_schemes__code__nav_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NavResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes/{code}/returns": {
+      "get": {
+        "summary": "Get Returns",
+        "operationId": "get_returns_v1_schemes__code__returns_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "periods",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "1m,3m,6m,ytd,1y,3y,5y,10y,si",
+              "title": "Periods"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          },
+          {
+            "name": "include_tax",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Tax"
+            }
+          },
+          {
+            "name": "tax_regime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "auto",
+              "title": "Tax Regime"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes/{code}/rolling-returns": {
+      "get": {
+        "summary": "Get Rolling",
+        "operationId": "get_rolling_v1_schemes__code__rolling_returns_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "window",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "1y",
+                "3y",
+                "5y"
+              ],
+              "type": "string",
+              "default": "3y",
+              "title": "Window"
+            }
+          },
+          {
+            "name": "step",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "daily",
+                "monthly"
+              ],
+              "type": "string",
+              "default": "monthly",
+              "title": "Step"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RollingResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schemes/{code}/risk": {
+      "get": {
+        "summary": "Get Risk",
+        "operationId": "get_risk_v1_schemes__code__risk_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "window",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "1y",
+                "3y",
+                "5y"
+              ],
+              "type": "string",
+              "default": "3y",
+              "title": "Window"
+            }
+          },
+          {
+            "name": "rf",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 0.055,
+              "title": "Rf"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/categories": {
+      "get": {
+        "summary": "Categories",
+        "operationId": "categories_v1_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/categories/{category}/metrics": {
+      "get": {
+        "summary": "Category Metrics",
+        "operationId": "category_metrics_v1_categories__category__metrics_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Category"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "1y",
+                "3y",
+                "5y"
+              ],
+              "type": "string",
+              "default": "1y",
+              "title": "Metric"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryMetricsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CategoriesResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "methodology_version",
+          "items"
+        ],
+        "title": "CategoriesResponse"
+      },
+      "CategoryItem": {
+        "properties": {
+          "category_group": {
+            "type": "string",
+            "title": "Category Group"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "scheme_count": {
+            "type": "integer",
+            "title": "Scheme Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category_group",
+          "category",
+          "scheme_count"
+        ],
+        "title": "CategoryItem"
+      },
+      "CategoryMetricsResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "median": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median"
+          },
+          "mean": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mean"
+          },
+          "p25": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P25"
+          },
+          "p75": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P75"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "category",
+          "metric",
+          "median",
+          "mean",
+          "p25",
+          "p75",
+          "n"
+        ],
+        "title": "CategoryMetricsResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "database": {
+            "type": "string",
+            "title": "Database"
+          },
+          "latest_nav_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Nav Date"
+          },
+          "scheme_count": {
+            "type": "integer",
+            "title": "Scheme Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "methodology_version",
+          "status",
+          "database",
+          "latest_nav_date",
+          "scheme_count"
+        ],
+        "title": "HealthResponse"
+      },
+      "NavItem": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "nav": {
+            "type": "number",
+            "title": "Nav"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "nav"
+        ],
+        "title": "NavItem"
+      },
+      "NavResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NavItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "scheme_code",
+          "total",
+          "limit",
+          "offset",
+          "items"
+        ],
+        "title": "NavResponse"
+      },
+      "PeriodReturn": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "post_tax": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Post Tax"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "status",
+          "reason"
+        ],
+        "title": "PeriodReturn"
+      },
+      "ReturnsResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "returns": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PeriodReturn"
+            },
+            "type": "object",
+            "title": "Returns"
+          },
+          "tax_regime_used": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Regime Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "scheme_code",
+          "returns"
+        ],
+        "title": "ReturnsResponse"
+      },
+      "RiskResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "window": {
+            "type": "string",
+            "title": "Window"
+          },
+          "rf": {
+            "type": "number",
+            "title": "Rf"
+          },
+          "volatility": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Volatility"
+          },
+          "max_drawdown": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Max Drawdown"
+          },
+          "sharpe": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Sharpe"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "scheme_code",
+          "window",
+          "rf",
+          "volatility",
+          "max_drawdown",
+          "sharpe"
+        ],
+        "title": "RiskResponse"
+      },
+      "RollingResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "window": {
+            "type": "string",
+            "title": "Window"
+          },
+          "summary": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "scheme_code",
+          "window",
+          "summary"
+        ],
+        "title": "RollingResponse"
+      },
+      "SchemeDetailResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "amc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amc"
+          },
+          "category_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Raw"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "category_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Group"
+          },
+          "plan": {
+            "type": "string",
+            "title": "Plan"
+          },
+          "option": {
+            "type": "string",
+            "title": "Option"
+          },
+          "first_nav_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Nav Date"
+          },
+          "last_nav_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Nav Date"
+          },
+          "nav_count": {
+            "type": "integer",
+            "title": "Nav Count"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "methodology_version",
+          "scheme_code",
+          "name",
+          "amc",
+          "category_raw",
+          "category",
+          "category_group",
+          "plan",
+          "option",
+          "first_nav_date",
+          "last_nav_date",
+          "nav_count",
+          "is_active"
+        ],
+        "title": "SchemeDetailResponse"
+      },
+      "SchemeItem": {
+        "properties": {
+          "scheme_code": {
+            "type": "integer",
+            "title": "Scheme Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "amc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amc"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "category_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Group"
+          },
+          "plan": {
+            "type": "string",
+            "title": "Plan"
+          },
+          "option": {
+            "type": "string",
+            "title": "Option"
+          },
+          "first_nav_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Nav Date"
+          },
+          "last_nav_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Nav Date"
+          },
+          "nav_count": {
+            "type": "integer",
+            "title": "Nav Count"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scheme_code",
+          "name",
+          "amc",
+          "category",
+          "category_group",
+          "plan",
+          "option",
+          "first_nav_date",
+          "last_nav_date",
+          "nav_count",
+          "is_active"
+        ],
+        "title": "SchemeItem"
+      },
+      "SchemesListResponse": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "methodology_version": {
+            "type": "string",
+            "title": "Methodology Version"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer",
+            "default": "Mutual Fund investments are subject to market risks. Read all scheme-related documents carefully. Past performance may or may not be sustained in the future. This API is informational and not investment advice."
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SchemeItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "methodology_version",
+          "total",
+          "limit",
+          "offset",
+          "items"
+        ],
+        "title": "SchemesListResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

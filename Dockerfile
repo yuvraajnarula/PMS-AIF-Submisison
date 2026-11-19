@@ -1,0 +1,9 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY pyproject.toml .
+RUN pip install --no-cache-dir .
+COPY app app
+COPY scripts scripts
+COPY data data
+EXPOSE 8000
+CMD ["sh", "-c", "python scripts/build_sample.py && python -m app.api.main"]
